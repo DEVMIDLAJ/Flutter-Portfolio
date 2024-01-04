@@ -1,6 +1,6 @@
 // ... (your existing imports)
 
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, non_constant_identifier_names, deprecated_member_use
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +10,8 @@ import 'package:my_portfolio/Globals/app_material_button.dart';
 import 'package:my_portfolio/Globals/app_text_style.dart';
 import 'package:my_portfolio/Globals/constants.dart';
 import 'package:my_portfolio/helper_class/helper_class.dart';
+import 'package:my_portfolio/model/project_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyProjects extends StatefulWidget {
   const MyProjects({Key? key}) : super(key: key);
@@ -21,18 +23,27 @@ class MyProjects extends StatefulWidget {
 class _MyProjectsState extends State<MyProjects> {
   int hoveredIndex = -1;
 
-  List images = <String>[
-    AppAssets.portfolio,
-    AppAssets.weatherApp,
-    AppAssets.expenceTrackerApp,
-    AppAssets.todoListApp,
-  ];
-
-  List<String> projectTitle = [
-    'PORTFOLIO WEBSITE',
-    'WEATHER APPLICATION  ',
-    'EXPENCE TRACKER APPLICATION ',
-    'TODO LIST APPLICATION',
+  List<ProjectModel> ProjectDetailsList = [
+    ProjectModel(
+      projectTitle: 'PORTFOLIO WEBSITE',
+      projectUrl: AppAssets.portfolio,
+      projectLink: 'https://github.com/DEVMIDLAJ/Flutter-Portfolio',
+    ),
+    ProjectModel(
+      projectTitle: 'WEATHER APP',
+      projectUrl: AppAssets.weatherApp,
+      projectLink: 'https://github.com/DEVMIDLAJ/WEATHER-APP',
+    ),
+    ProjectModel(
+      projectTitle: 'EXPENCE TRACKER APP',
+      projectUrl: AppAssets.expenceTrackerApp,
+      projectLink: 'https://github.com/DEVMIDLAJ/Expense-App',
+    ),
+    ProjectModel(
+      projectTitle: 'TODO LIST APP',
+      projectUrl: AppAssets.todoListApp,
+      projectLink: 'https://github.com/DEVMIDLAJ/TODO-APP',
+    ),
   ];
 
   @override
@@ -101,11 +112,11 @@ class _MyProjectsState extends State<MyProjects> {
         mainAxisSpacing: 30,
         crossAxisSpacing: 30,
       ),
-      itemCount: images.length,
+      itemCount: ProjectDetailsList.length,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        var image = images[index];
+        var image = ProjectDetailsList[index].projectUrl;
         bool isHovered = index == hoveredIndex;
         return InkWell(
           onTap: () {},
@@ -150,19 +161,24 @@ class _MyProjectsState extends State<MyProjects> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          projectTitle[index],
+                          ProjectDetailsList[index].projectTitle,
                           style: AppTextStyle.montserratTextStyle(
                               color: AppColors.bgColor),
                         ),
                         Constants.sizedBox(hight: size.height * 0.02),
                         Text(
-                          'A ${projectTitle[index]} build using Flutter click here to see the source code',
+                          'A ${ProjectDetailsList[index].projectTitle} build using Flutter click here to see the source code',
                           style: AppTextStyle.signikaNegativeTextStyle(
                               color: AppColors.bgColor),
                         ),
-                        const CircleAvatar(
-                          backgroundColor: Colors.white,
-                          child: Icon(Icons.ios_share),
+                        GestureDetector(
+                          onTap: () {
+                            _launchURL(ProjectDetailsList[index].projectLink);
+                          },
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.white,
+                            child: Icon(Icons.ios_share),
+                          ),
                         )
                       ],
                     ),
@@ -195,4 +211,15 @@ class _MyProjectsState extends State<MyProjects> {
       ),
     );
   }
+
+  // Function to open a URL
+  void _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  
 }

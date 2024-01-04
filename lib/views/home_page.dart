@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, deprecated_member_use, use_build_context_synchronously, unused_element, prefer_const_declarations
 
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
@@ -213,6 +213,37 @@ class _HomePageState extends State<HomePage> {
       await launch(url);
     } else {
       throw 'Could not launch $url';
+    }
+  }
+  
+  // Function to download the PDF
+  Future<void> _downloadPDF() async {
+    final pdfUrl = 'https://example.com/your-cv.pdf';
+
+    // Check if the URL can be launched
+    if (await canLaunch(pdfUrl)) {
+      // Launch the URL (this will open the browser or a PDF viewer if available)
+      await launch(pdfUrl);
+    } else {
+      // Handle the case where the URL can't be launched
+      // (e.g., the URL is not valid or the user doesn't have a PDF viewer installed)
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Could not launch the PDF download.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 }
