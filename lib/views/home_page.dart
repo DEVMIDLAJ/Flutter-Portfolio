@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
 
   final socialMediaLinks = <String>[
     'https://github.com/DEVMIDLAJ',
-    'https://www.linkedin.com/in/midlaj-bin-muhammadmidlaj-bin-muhammad/',
+    'https://www.linkedin.com/in/midlaj-bin-muhammad/',
     'https://www.facebook.com/your_username/',
     'https://twitter.com/your_username/',
     'https://www.instagram.com/your_username/',
